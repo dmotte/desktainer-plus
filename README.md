@@ -9,13 +9,49 @@
 
 > :package: This image is also on **Docker Hub** as [`dmotte/desktainer-plus`](https://hub.docker.com/r/dmotte/desktainer-plus) and runs on **several architectures** (e.g. amd64, arm64, ...). To see the full list of supported platforms, please refer to the `.github/workflows/docker.yml` file. If you need an architecture which is currently unsupported, feel free to open an issue.
 
+## Extensions
+
+On top of the base [dmotte/desktainer](https://github.com/dmotte/desktainer) image, we have:
+
+- installed some **additional packages** (`nano`, `curl`, `zip`, `tmux`, etc.)
+- installed the **Firefox** web browser
+- installed the **OpenSSH server**
+  - configured it in *supervisor* as a service
+  - running on **port 22**
+- installed **Shell In A Box**
+  - configured it in *supervisor* as a service
+  - running on **port 4200**
+- already created a custom user named `debian` and made some customizations to it
+
+See the `docker-build/Dockerfile` file for further details.
+
 ## Usage
 
-The simplest way to try this image is:
+The first thing you'll need are **host keys** for the OpenSSH server. You can generate them with the following commands:
+
+```bash
+mkdir -p hostkeys/etc/ssh
+ssh-keygen -A -f hostkeys
+mv hostkeys/etc/ssh/* hostkeys
+rm -r hostkeys/etc
+```
+
+If you omit this step, the container will generate them internally, but they will be different each time and of course container startup will also be a little slower.
+
+Then you can start your container with:
 
 ```bash
 docker run -it --rm \
+    -v $PWD/hostkeys/ssh_host_dsa_key:/etc/ssh/ssh_host_dsa_key:ro \
+    -v $PWD/hostkeys/ssh_host_dsa_key.pub:/etc/ssh/ssh_host_dsa_key.pub:ro \
+    -v $PWD/hostkeys/ssh_host_ecdsa_key:/etc/ssh/ssh_host_ecdsa_key:ro \
+    -v $PWD/hostkeys/ssh_host_ecdsa_key.pub:/etc/ssh/ssh_host_ecdsa_key.pub:ro \
+    -v $PWD/hostkeys/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key:ro \
+    -v $PWD/hostkeys/ssh_host_ed25519_key.pub:/etc/ssh/ssh_host_ed25519_key.pub:ro \
+    -v $PWD/hostkeys/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key:ro \
+    -v $PWD/hostkeys/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub:ro \
     -p 6901:6901 \
+    -p 2222:22 \
     -p 4200:4200 \
     dmotte/desktainer-plus
 ```
@@ -24,12 +60,13 @@ Then:
 
 - head over to http://localhost:6901/ to access the **remote desktop**;
 - head over to http://localhost:4200/ to access the in-browser **remote shell**;
+- connect to `localhost` on port `2222` via *SSH* to log into the **OpenSSH server**.
 
 ![screen01](screen01.png)
 
 For a more complex usage example, refer to the `docker-compose.yml` file.
 
-> :bulb: **Tip**: If you need to, you can further extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer`) and/or mount custom *supervisor* configuration files.
+> :bulb: **Tip**: If you need to, you can further extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer-plus`) and/or mount custom *supervisor* configuration files.
 
 ### Environment variables
 
@@ -43,7 +80,7 @@ If you want to contribute to this project, the first thing you have to do is to 
 git clone https://github.com/dmotte/desktainer-plus.git
 ```
 
-Then you just have to run this command:
+Then you'll have to create your **host keys** (see the [Usage](#Usage) section of this document) inside the `vols-desktainer-plus` directory and run:
 
 ```bash
 docker-compose up --build
