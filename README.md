@@ -36,7 +36,7 @@ mv hostkeys/etc/ssh/* hostkeys
 rm -r hostkeys/etc
 ```
 
-If you omit this step, the container will generate them internally, but they will be different each time and of course container startup will also be a little slower.
+If you omit this step, the **OpenSSH server** will actively **refuse all the connections** (which is OK if you don't need it).
 
 Then you can start your container with:
 
