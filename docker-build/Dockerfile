@@ -16,8 +16,11 @@ COPY supervisor-confd/* /etc/supervisor/conf.d/
 # container and then mount them inside, for security reasons
 RUN rm /etc/ssh/ssh_host_*_key && rm /etc/ssh/ssh_host_*_key.pub
 
-# sshd: create the privilege separation directory
+# sshd: Create the privilege separation directory
 RUN mkdir -p /var/run/sshd
+
+# sshd: Make X11 forwarding work
+RUN sed -i 's/^.*X11UseLocalhost.*$/X11UseLocalhost no/' /etc/ssh/sshd_config
 
 # Create custom user named "debian"
 RUN useradd \
