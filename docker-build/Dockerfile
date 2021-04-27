@@ -19,8 +19,11 @@ RUN rm /etc/ssh/ssh_host_*_key && rm /etc/ssh/ssh_host_*_key.pub
 # sshd: Create the privilege separation directory
 RUN mkdir -p /var/run/sshd
 
-# sshd: Make X11 forwarding work
-RUN sed -i 's/^.*X11UseLocalhost.*$/X11UseLocalhost no/' /etc/ssh/sshd_config
+# sshd: Always use IPv4
+# This makes SSH X11 forwarding work. Usually, Docker containers do not have an
+# IPv6 address and, by default, SSH X11 forwarding listens on [::1]:6010 on the
+# server, but we want it to listen on 127.0.0.1 instead
+RUN sed -i 's/^.*AddressFamily.*$/AddressFamily inet/' /etc/ssh/sshd_config
 
 # Create custom user named "debian"
 RUN useradd \
