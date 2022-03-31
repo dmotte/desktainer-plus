@@ -66,6 +66,8 @@ Then:
 
 ![screen01](screen01.png)
 
+> :bulb: **Tip**: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though.
+
 For a more complex usage example, refer to the `docker-compose.yml` file.
 
 > :bulb: **Tip**: If you need to, you can further extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer-plus`) and/or mount custom *supervisor* configuration files.
