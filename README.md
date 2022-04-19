@@ -1,6 +1,6 @@
 # desktainer-plus
 
-![](desktainer-plus-icon-128.png)
+![](icon-128.png)
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dmotte/desktainer-plus/docker?logo=github&style=flat-square)](https://github.com/dmotte/desktainer-plus/actions)
 [![Docker Pulls](https://img.shields.io/docker/pulls/dmotte/desktainer-plus?logo=docker&style=flat-square)](https://hub.docker.com/r/dmotte/desktainer-plus)
@@ -18,10 +18,10 @@ On top of the base [dmotte/desktainer](https://github.com/dmotte/desktainer) ima
 - installed some **additional packages** (`nano`, `curl`, `zip`, `tmux`, etc.)
 - installed the **Firefox** web browser
 - installed the **OpenSSH server**
-  - configured it in *supervisor* as a service
+  - configured it in _supervisor_ as a service
   - running on **port 22**
 - installed **Shell In A Box**
-  - configured it in *supervisor* as a service
+  - configured it in _supervisor_ as a service
   - running on **port 4200**
 - already created a custom user named `debian` and made some customizations to it
 
@@ -62,7 +62,7 @@ Then:
 
 - head over to http://localhost:6901/ to access the **remote desktop**;
 - head over to http://localhost:4200/ to access the in-browser **remote shell**;
-- connect to `localhost` on port `2222` via *SSH* to log into the **OpenSSH server**.
+- connect to `localhost` on port `2222` via _SSH_ to log into the **OpenSSH server**.
 
 ![screen01](screen01.png)
 
@@ -70,7 +70,7 @@ Then:
 
 For a more complex usage example, refer to the `docker-compose.yml` file.
 
-> :bulb: **Tip**: If you need to, you can further extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer-plus`) and/or mount custom *supervisor* configuration files.
+> :bulb: **Tip**: If you need to, you can further extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer-plus`) and/or mount custom _supervisor_ configuration files.
 
 ### Environment variables
 
