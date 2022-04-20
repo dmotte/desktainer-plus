@@ -1,6 +1,6 @@
 # desktainer-plus
 
-![](icon-128.png)
+![icon](icon-128.png)
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dmotte/desktainer-plus/release?logo=github&style=flat-square)](https://github.com/dmotte/desktainer-plus/actions)
 [![Docker Pulls](https://img.shields.io/docker/pulls/dmotte/desktainer-plus?logo=docker&style=flat-square)](https://hub.docker.com/r/dmotte/desktainer-plus)
