@@ -9,4 +9,4 @@
 
 Please refer to the [GitHub repository](https://github.com/dmotte/desktainer-plus) for more information.
 
-![screen01](https://raw.githubusercontent.com/dmotte/desktainer-plus/main/screen01.png)
+![Screenshot](https://raw.githubusercontent.com/dmotte/desktainer-plus/main/screen-01.png)

@@ -64,7 +64,7 @@ Then:
 - head over to http://localhost:4200/ to access the in-browser **remote shell**;
 - connect to `localhost` on port `2222` via _SSH_ to log into the **OpenSSH server**.
 
-![screen01](screen01.png)
+![Screenshot](screen-01.png)
 
 > :bulb: **Tip**: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though.
 
