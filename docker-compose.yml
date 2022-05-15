@@ -4,7 +4,7 @@ version: "3"
 services:
   desktainer-plus:
     image: dmotte/desktainer-plus
-    build: docker-build
+    build: build
     restart: always
     hostname: desktainer-plus
     ports:

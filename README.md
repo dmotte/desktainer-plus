@@ -25,7 +25,7 @@ On top of the base [dmotte/desktainer](https://github.com/dmotte/desktainer) ima
   - running on **port 4200**
 - already created a custom user named `debian` and made some customizations to it
 
-See the `docker-build/Dockerfile` file for further details.
+See the `build/Dockerfile` file for further details.
 
 ## Usage
 
@@ -90,7 +90,7 @@ Then you'll have to create your **host keys** (see the [Usage](#Usage) section o
 docker-compose down && docker-compose up --build
 ```
 
-This will automatically **build the Docker image** using the `docker-build` directory as build context and then the **Docker-Compose stack** will be started.
+This will automatically **build the Docker image** using the `build` directory as build context and then the **Docker-Compose stack** will be started.
 
 If you prefer to run the stack in daemon (detached) mode:
 
