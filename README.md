@@ -84,7 +84,7 @@ If you want to contribute to this project, the first thing you have to do is to 
 git clone https://github.com/dmotte/desktainer-plus.git
 ```
 
-Then you'll have to create your **host keys** (see the [Usage](#Usage) section of this document) inside the `vols-desktainer-plus` directory and run:
+Then you'll have to create your **host keys** (see the [Usage](#Usage) section of this document) inside the `volumes` directory and run:
 
 ```bash
 docker-compose down && docker-compose up --build
