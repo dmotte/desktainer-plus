@@ -7,7 +7,7 @@
 
 :computer: Remote **desk**top in a cont**ainer** (extended version). This is an extension of the [dmotte/desktainer](https://github.com/dmotte/desktainer) Docker image.
 
-> :package: This image is also on **Docker Hub** as [`dmotte/desktainer-plus`](https://hub.docker.com/r/dmotte/desktainer-plus) and runs on **several architectures** (e.g. amd64, arm64, ...). To see the full list of supported platforms, please refer to the `.github/workflows/release.yml` file. If you need an architecture which is currently unsupported, feel free to open an issue.
+> :package: This image is also on **Docker Hub** as [`dmotte/desktainer-plus`](https://hub.docker.com/r/dmotte/desktainer-plus) and runs on **several architectures** (e.g. amd64, arm64, ...). To see the full list of supported platforms, please refer to the [`.github/workflows/release.yml`](.github/workflows/release.yml) file. If you need an architecture which is currently unsupported, feel free to open an issue.
 
 > :calendar: The build process of this Docker image is **triggered automatically every month** (thanks, [GitHub Actions](https://github.com/features/actions)! :smile:) to ensure that you get it with all the latest updated packages. See the [workflow file](.github/workflows/release.yml) for further information.
 
@@ -25,7 +25,7 @@ On top of the base [dmotte/desktainer](https://github.com/dmotte/desktainer) ima
   - running on **port 4200**
 - already created a custom user named `debian` and made some customizations to it
 
-See the `build/Dockerfile` file for further details.
+See the [`build/Dockerfile`](build/Dockerfile) file for further details.
 
 ## Usage
 
@@ -68,7 +68,7 @@ Then:
 
 > :bulb: **Tip**: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though.
 
-For a more complex usage example, refer to the `docker-compose.yml` file.
+For a more complex usage example, refer to the [`docker-compose.yml`](docker-compose.yml) file.
 
 > :bulb: **Tip**: If you need to, you can further extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer-plus`) and/or mount custom _supervisor_ configuration files.
 
