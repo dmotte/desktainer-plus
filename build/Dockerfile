@@ -7,7 +7,8 @@ EXPOSE 22 4200
 RUN apt-get update \
     && apt-get install -y git htop nano tmux tree wget zip curl socat procps \
         openssh-server shellinabox \
-        firefox-esr dirmngr lynx
+        firefox-esr dirmngr lynx \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy the additional supervisor configuration files
 COPY supervisor-confd/* /etc/supervisor/conf.d/
