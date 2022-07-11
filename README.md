@@ -72,7 +72,7 @@ For a more complex usage example, refer to the [`docker-compose.yml`](docker-com
 
 > :bulb: **Tip**: If you need to, you can further extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer-plus`) and/or mount custom _supervisor_ configuration files.
 
-> :bulb: **Tip**: if you need to run commands at LXDE startup, you can create a launcher file in the `/etc/xdg/autostart` directory.
+> :bulb: **Tip**: if you need to run commands after the LXDE startup, you can create launcher files in the `/etc/xdg/autostart` or the `~/.config/autostart` directory.
 
 ### Environment variables
 
