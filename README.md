@@ -72,7 +72,16 @@ For a more complex usage example, refer to the [`docker-compose.yml`](docker-com
 
 > :bulb: **Tip**: If you need to, you can further extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer-plus`) and/or mount custom _supervisor_ configuration files.
 
-> :bulb: **Tip**: if you need to run commands after the LXDE startup, you can create launcher files in the `/etc/xdg/autostart` or the `~/.config/autostart` directory.
+### Run commands at container startup
+
+If you need to run commands at container startup, you can create Bash scripts in the following locations:
+
+- `/opt/startup-early/*.sh`: these scripts will be included in alphabetical order **before** the main container initialization process
+- `/opt/startup-late/*.sh`: these scripts will be included in alphabetical order **after** the main container initialization process
+
+See the [`startup.sh`](build/startup.sh) script for more details.
+
+Moreover, if you need to run commands after the LXDE startup, you can create launcher files in the `/etc/xdg/autostart` or the `~/.config/autostart` directory.
 
 ### Environment variables
 
