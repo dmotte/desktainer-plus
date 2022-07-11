@@ -23,7 +23,7 @@ On top of the base [dmotte/desktainer](https://github.com/dmotte/desktainer) ima
 - installed **Shell In A Box**
   - configured it in _supervisor_ as a service
   - running on **port 4200**
-- already created a custom user named `debian` and made some customizations to it
+- already created a custom user named `mainuser` and made some customizations to it
 
 See the [`build/Dockerfile`](build/Dockerfile) file for further details.
 

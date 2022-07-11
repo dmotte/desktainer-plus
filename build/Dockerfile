@@ -7,14 +7,13 @@ EXPOSE 22 4200
 RUN apt-get update \
     && apt-get install -y git htop nano tmux tree wget zip curl socat procps \
         openssh-server shellinabox \
-        firefox-esr dirmngr lynx \
+        firefox-esr dirmngr lynx dconf-cli \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the additional supervisor configuration files
 COPY supervisor-confd/* /etc/supervisor/conf.d/
 
-# sshd: Remove the generated SSH host keys! We want to generate them outside the
-# container and then mount them inside, for security reasons
+# sshd: Remove the generated SSH host keys! For obvious security reasons
 RUN rm /etc/ssh/ssh_host_*_key && rm /etc/ssh/ssh_host_*_key.pub
 
 # sshd: Create the privilege separation directory
@@ -26,16 +25,42 @@ RUN mkdir -p /var/run/sshd
 # server, but we want it to listen on 127.0.0.1 instead
 RUN sed -i 's/^.*AddressFamily.*$/AddressFamily inet/' /etc/ssh/sshd_config
 
-# Create custom user named "debian"
+# Create custom user named "mainuser"
 RUN useradd \
     --create-home \
     --shell /bin/bash \
     --user-group \
     --groups adm,sudo \
-    debian
+    mainuser
+
+# Perform some stuff as mainuser
+USER mainuser
+WORKDIR /home/mainuser
+
+# Create some needed directories
+RUN mkdir -p ".config/autostart" ".config/pcmanfm/LXDE" "Desktop"
+
+# Copy the mimeapps.list file (for file types associations)
+COPY mimeapps.list .config
+
+# Copy the initial dconf settings file
+COPY initial.dconf .config
+
+# LXDE launcher: load initial dconf settings
+RUN echo '[Desktop Entry]\nType=Application\nName=dconf-load\nExec=/bin/sh -c "/usr/bin/dconf load / < ~/.config/initial.dconf"\nNoDisplay=true' \
+    > ".config/autostart/dconf-load.desktop"
+
+# LXDE launcher: set resolution with xrandr
+RUN echo '[Desktop Entry]\nType=Application\nName=xrandr-fb\nExec=/usr/bin/xrandr --fb 1920x900\nNoDisplay=true' \
+    > ".config/autostart/xrandr-fb.desktop"
 
 # LXDE: set desktop background color
-RUN mkdir -p "/home/debian/.config/pcmanfm/LXDE" \
-    && echo '[*]\nwallpaper_mode=color\ndesktop_bg=#3a6ea5' \
-        > "/home/debian/.config/pcmanfm/LXDE/desktop-items-0.conf" \
-    && chown -R debian:debian "/home/debian/.config"
+RUN echo '[*]\nwallpaper_mode=color\ndesktop_bg=#3a6ea5' \
+    > ".config/pcmanfm/LXDE/desktop-items-0.conf"
+
+# Create a symbolic link to the "data" directory on Desktop
+# RUN ln -s /data/mainuser Desktop/data # TODO shouldn't be here
+
+# Become the root user again
+USER root
+WORKDIR /
