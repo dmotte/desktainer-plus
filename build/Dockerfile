@@ -33,6 +33,10 @@ RUN useradd \
     --groups adm,sudo \
     mainuser
 
+# Startup script for persistent directory initialization
+RUN echo 'mkdir -p /data/mainuser && chown mainuser:mainuser /data/mainuser' \
+    > "/opt/startup-late/50-data-mainuser.sh"
+
 # Perform some stuff as mainuser
 USER mainuser
 WORKDIR /home/mainuser
@@ -58,8 +62,8 @@ RUN echo '[Desktop Entry]\nType=Application\nName=xrandr-fb\nExec=/usr/bin/xrand
 RUN echo '[*]\nwallpaper_mode=color\ndesktop_bg=#3a6ea5' \
     > ".config/pcmanfm/LXDE/desktop-items-0.conf"
 
-# Create a symbolic link to the "data" directory on Desktop
-# RUN ln -s /data/mainuser Desktop/data # TODO shouldn't be here
+# Create a symbolic link to the persistent directory on Desktop
+RUN ln -s /data/mainuser Desktop/persistent
 
 # Become the root user again
 USER root
