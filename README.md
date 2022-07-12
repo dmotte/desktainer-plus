@@ -33,7 +33,7 @@ The first thing you'll need are **host keys** for the OpenSSH server. You can ge
 
 ```bash
 mkdir -p hostkeys/etc/ssh
-ssh-keygen -A -f hostkeys
+ssh-keygen -Af hostkeys
 mv hostkeys/etc/ssh/* hostkeys
 rm -r hostkeys/etc
 ```
