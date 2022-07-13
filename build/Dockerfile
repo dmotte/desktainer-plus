@@ -6,6 +6,7 @@ EXPOSE 22 4200
 # Install additional packages
 RUN apt-get update \
     && apt-get install -y git htop nano tmux tree wget zip curl socat procps \
+        iputils-ping iproute2 \
         openssh-server shellinabox \
         firefox-esr dirmngr lynx dconf-cli \
     && rm -rf /var/lib/apt/lists/*
