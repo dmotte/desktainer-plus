@@ -26,6 +26,9 @@ RUN mkdir -p /var/run/sshd
 # server, but we want it to listen on 127.0.0.1 instead
 RUN sed -i 's/^.*AddressFamily.*$/AddressFamily inet/' /etc/ssh/sshd_config
 
+# sshd: startup script for missing host keys generation
+RUN echo 'ssh-keygen -A' > "/opt/startup-late/50-hostkeys.sh"
+
 # Create custom user named "mainuser"
 RUN useradd \
     --create-home \
