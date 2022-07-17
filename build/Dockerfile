@@ -3,6 +3,9 @@ FROM dmotte/desktainer
 # Expose the SSH and Shellinabox ports
 EXPOSE 22 4200
 
+# Declare the persistent directory as volume
+VOLUME /data
+
 # Install additional packages
 RUN apt-get update \
     && apt-get install -y git htop nano tmux tree wget zip curl socat procps \

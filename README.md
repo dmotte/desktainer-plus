@@ -20,43 +20,24 @@ On top of the base [dmotte/desktainer](https://github.com/dmotte/desktainer) ima
 - installed the **OpenSSH server**
   - configured it in _supervisor_ as a service
   - running on **port 22**
+  - missing OpenSSH server **host keys** are **generated automatically** at container startup
 - installed **Shell In A Box**
   - configured it in _supervisor_ as a service
   - running on **port 4200**
 - already created a custom user named `mainuser` and made some customizations to it
+- declared a persistent `/data` volume
 
 See the [`build/Dockerfile`](build/Dockerfile) file for further details.
 
 ## Usage
 
-The first thing you'll need are **host keys** for the OpenSSH server. You can generate them with the following commands:
+The simplest way to try this image is:
 
 ```bash
-mkdir -p hostkeys/etc/ssh
-ssh-keygen -Af hostkeys
-mv hostkeys/etc/ssh/* hostkeys
-rm -r hostkeys/etc
+docker run -it --rm -p 6901:6901 -p 2222:22 -p 4200:4200 dmotte/desktainer-plus
 ```
 
-If you omit this step, the **OpenSSH server** will actively **refuse all the connections** (which is OK if you don't need it).
-
-Then you can start your container with:
-
-```bash
-docker run -it --rm \
-    -v $PWD/hostkeys/ssh_host_dsa_key:/etc/ssh/ssh_host_dsa_key:ro \
-    -v $PWD/hostkeys/ssh_host_dsa_key.pub:/etc/ssh/ssh_host_dsa_key.pub:ro \
-    -v $PWD/hostkeys/ssh_host_ecdsa_key:/etc/ssh/ssh_host_ecdsa_key:ro \
-    -v $PWD/hostkeys/ssh_host_ecdsa_key.pub:/etc/ssh/ssh_host_ecdsa_key.pub:ro \
-    -v $PWD/hostkeys/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key:ro \
-    -v $PWD/hostkeys/ssh_host_ed25519_key.pub:/etc/ssh/ssh_host_ed25519_key.pub:ro \
-    -v $PWD/hostkeys/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key:ro \
-    -v $PWD/hostkeys/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub:ro \
-    -p 6901:6901 \
-    -p 2222:22 \
-    -p 4200:4200 \
-    dmotte/desktainer-plus
-```
+> :warning: This is **not recommended** for production though, since the missing OpenSSH server host keys are generated at container creation and so they are not persisted.
 
 Then:
 
@@ -66,51 +47,41 @@ Then:
 
 ![Screenshot](screen-01.png)
 
-> :bulb: **Tip**: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though.
+## Standard usage
 
-For a more complex usage example, refer to the [`docker-compose.yml`](docker-compose.yml) file.
+The [`docker-compose.yml`](docker-compose.yml) file contains a complete usage example for this image. Feel free to simplify it and adapt it to your needs. Unless you want to build the image from scratch, comment out the `build: build` line to use the pre-built one from _Docker Hub_ instead.
 
-> :bulb: **Tip**: If you need to, you can further extend this project by making your own `Dockerfile` starting from this image (i.e. `FROM dmotte/desktainer-plus`) and/or mount custom _supervisor_ configuration files.
+> :information_source: If you want to use **persistent host keys** for the OpenSSH server (recommended for production) you can generate them with the following commands before running the container:
+>
+> ```bash
+> mkdir -p hostkeys/etc/ssh
+> ssh-keygen -Af hostkeys
+> mv hostkeys/etc/ssh/* hostkeys
+> rm -r hostkeys/etc
+> ```
+>
+> Then remember to uncomment the related lines inside the [`docker-compose.yml`](docker-compose.yml) file.
 
-### Run commands at container startup
-
-If you need to run commands at container startup, you can create Bash scripts in the following locations:
-
-- `/opt/startup-early/*.sh`: these scripts will be included in alphabetical order **before** the main container initialization process
-- `/opt/startup-late/*.sh`: these scripts will be included in alphabetical order **after** the main container initialization process
-
-See the [`startup.sh`](build/startup.sh) script for more details.
-
-Moreover, if you need to run commands after the LXDE startup, you can create launcher files in the `/etc/xdg/autostart` or the `~/.config/autostart` directory.
-
-### Environment variables
-
-Same as the [dmotte/desktainer](https://github.com/dmotte/desktainer) project.
-
-## Development
-
-If you want to contribute to this project, the first thing you have to do is to **clone this repository** on your local machine:
-
-```bash
-git clone https://github.com/dmotte/desktainer-plus.git
-```
-
-Then you'll have to create your **host keys** (see the [Usage](#Usage) section of this document) inside the `volumes` directory and run:
-
-```bash
-docker-compose down && docker-compose up --build
-```
-
-This will automatically **build the Docker image** using the `build` directory as build context and then the **Docker-Compose stack** will be started.
-
-If you prefer to run the stack in daemon (detached) mode:
+To start the Docker-Compose stack in daemon (detached) mode:
 
 ```bash
 docker-compose up -d
 ```
 
-In this case, you can view the logs using the `docker-compose logs` command:
+Then you can view the logs using this command:
 
 ```bash
 docker-compose logs -ft
+```
+
+### Tips
+
+- :bulb: If you want to **change the resolution** while the container is running, you can use the `xrandr --fb 1024x768` command. The new resolution cannot be larger than the one specified in the `RESOLUTION` environment variable though
+
+## Development
+
+If you want to contribute to this project, you can use the following command to **rebuild the image** and bring up the **Docker-Compose stack** every time you make a change to the code:
+
+```bash
+docker-compose down && docker-compose up --build
 ```
